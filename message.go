@@ -1,6 +1,7 @@
 package wechat
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"time"
 )
@@ -85,6 +86,24 @@ type BaseMessage struct {
 	MsgType string `xml:"MsgType" json:"MsgType"`
 }
 
+//CommonAttr 设置消息通用属性
+func (bm *BaseMessage) CommonAttr(openID, appID, mType string) {
+	bm.ToUserName = openID
+	bm.FromUserName = appID
+	bm.MsgType = mType
+	bm.CreateTime = time.Now().Unix()
+}
+
+//XML 格式化成xml格式
+func (bm *BaseMessage) XML(v interface{}) ([]byte, error) {
+	return xml.Marshal(v)
+}
+
+//JSON 格式化成json格式
+func (bm *BaseMessage) JSON(v interface{}) ([]byte, error) {
+	return json.Marshal(v)
+}
+
 //TextMessage 文字回复
 type TextMessage struct {
 	XMLName xml.Name `xml:"xml"`
@@ -97,18 +116,6 @@ type Text struct {
 	Content string `xml:"Content" json:"Content"`
 }
 
-//Text 回复微信文字消息
-func (m Message) Text(content Text) TextMessage {
-	t := TextMessage{}
-	t.Text = content
-	t.ToUserName = m.OpenID
-	t.FromUserName = m.AppID
-	t.CreateTime = time.Now().Unix()
-	t.MsgType = MsgTypeText
-
-	return t
-}
-
 //ImageMessage 图片消息
 type ImageMessage struct {
 	XMLName xml.Name `xml:"xml"`
@@ -119,18 +126,6 @@ type ImageMessage struct {
 //Image 图片结构
 type Image struct {
 	MediaID string `xml:"MediaId" json:"MediaId"`
-}
-
-//Image 图片消息
-func (m Message) Image(image Image) ImageMessage {
-	t := ImageMessage{}
-	t.Image = image
-	t.ToUserName = m.OpenID
-	t.FromUserName = m.AppID
-	t.CreateTime = time.Now().Unix()
-	t.MsgType = MsgTypeImage
-
-	return t
 }
 
 //VoiceMessage 语音消息
@@ -146,18 +141,6 @@ type Voice struct {
 	MediaID string   `xml:"MediaId" json:"MediaId"`
 }
 
-//Voice 返回语音消息
-func (m Message) Voice(voice Voice) VoiceMessage {
-	t := VoiceMessage{}
-	t.Voice = voice
-	t.ToUserName = m.OpenID
-	t.FromUserName = m.AppID
-	t.CreateTime = time.Now().Unix()
-	t.MsgType = MsgTypeImage
-
-	return t
-}
-
 //VideoMessage 视频消息
 type VideoMessage struct {
 	XMLName xml.Name `xml:"xml"`
@@ -170,18 +153,6 @@ type Video struct {
 	MediaID     string `xml:"MediaId" json:"MediaId"`
 	Title       string `xml:"Title" json:"Title"`
 	Description string `xml:"Description" json:"Description"`
-}
-
-//Video 视频消息返回
-func (m Message) Video(video Video) VideoMessage {
-	t := VideoMessage{}
-	t.Video = video
-	t.ToUserName = m.OpenID
-	t.FromUserName = m.AppID
-	t.CreateTime = time.Now().Unix()
-	t.MsgType = MsgTypeVedio
-
-	return t
 }
 
 //MusicMessage 音乐消息
@@ -199,18 +170,6 @@ type Music struct {
 	MusicURL     string   `xml:"MusicUrl" json:"MusicUrl"`
 	HQMusicURL   string   `xml:"HQMusicUrl" json:"HQMusicUrl"`
 	ThumbMediaID string   `xml:"ThumbMediaId" json:"ThumbMediaId"`
-}
-
-//Music 音乐消息返回
-func (m Message) Music(music Music) MusicMessage {
-	t := MusicMessage{}
-	t.Music = music
-	t.ToUserName = m.OpenID
-	t.FromUserName = m.AppID
-	t.CreateTime = time.Now().Unix()
-	t.MsgType = MsgTypeMusic
-
-	return t
 }
 
 //NewsMessage 图文消息结构体
@@ -234,17 +193,4 @@ type ArticleItem struct {
 	Description string   `xml:"Description" json:"Description"`
 	PicURL      string   `xml:"PicUrl" json:"PicUrl"`
 	URL         string   `xml:"Url" json:"Url"`
-}
-
-//News 图文消息
-func (m Message) News(Article []ArticleItem) NewsMessage {
-	t := NewsMessage{}
-	t.Article.ArticleItem = Article
-	t.ArticleCount = len(Article)
-	t.ToUserName = m.OpenID
-	t.FromUserName = m.AppID
-	t.CreateTime = time.Now().Unix()
-	t.MsgType = MsgTypeNews
-
-	return t
 }
