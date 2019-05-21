@@ -1,2 +1,2 @@
 # wechat-go
-wechat SDK for ggolang
+wechat SDK for golang
