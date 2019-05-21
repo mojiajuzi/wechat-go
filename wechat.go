@@ -10,7 +10,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 )
 
 //Wechat 微信基本配置
@@ -23,10 +22,10 @@ type Wechat struct {
 
 //AccessToken 微信access_token
 type AccessToken struct {
-	Token     string        `json:"access_token"`
-	ExpiresIn time.Duration `json:"expires_in"`
-	ErrorCode string        `json:"errcode"`
-	ErrMsg    string        `json:"errmsg"`
+	Token     string `json:"access_token"`
+	ExpiresIn int    `json:"expires_in"`
+	ErrorCode string `json:"errcode"`
+	ErrMsg    string `json:"errmsg"`
 }
 
 //CheckSignature 判断消息是否来自微信
@@ -58,7 +57,7 @@ func (w *Wechat) CheckSignature(signature, nonce, echostr string, timestamp int6
 func (w *Wechat) AccessToken() (AccessToken, error) {
 	uri := "https://api.weixin.qq.com/cgi-bin/token"
 	v := url.Values{}
-	v.Set("grant_type", "grant_type")
+	v.Set("grant_type", "client_credential")
 	v.Set("appid", w.AppID)
 	v.Set("secret", w.Secret)
 	url := uri + "?" + v.Encode()
@@ -76,10 +75,11 @@ func (w *Wechat) AccessToken() (AccessToken, error) {
 			return token, err
 		}
 		json.Unmarshal(data, &token)
+
 		if !strings.EqualFold(token.Token, "") {
 			return token, nil
 		}
 		return token, errors.New(token.ErrMsg)
 	}
-	return token, errors.New("请求失败")
+	return token, errors.New(resp.Status)
 }

@@ -1,7 +1,6 @@
 package wechat
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"time"
 )
@@ -23,11 +22,6 @@ const MsgTypeMusic = "music"
 
 //MsgTypeNews 图文
 const MsgTypeNews = "news"
-
-//ToXML 转换成xml字符串
-type ToXML interface {
-	XML() ([]byte, error)
-}
 
 //Message 微信消息结构体
 type Message struct {
@@ -98,16 +92,6 @@ type TextMessage struct {
 	BaseMessage
 }
 
-//JSON 转换成json编码
-func (m Message) JSON(t interface{}) ([]byte, error) {
-	return json.MarshalIndent(t, "", "  ")
-}
-
-//XML 转换成json编码
-func (m Message) XML(t interface{}) ([]byte, error) {
-	return xml.MarshalIndent(t, "", "  ")
-}
-
 //Text 文字消息
 type Text struct {
 	Content string `xml:"Content" json:"Content"`
@@ -128,14 +112,13 @@ func (m Message) Text(content Text) TextMessage {
 //ImageMessage 图片消息
 type ImageMessage struct {
 	XMLName xml.Name `xml:"xml"`
-	Image
+	Image   `xml:"Image" json:"Image"`
 	BaseMessage
 }
 
 //Image 图片结构
 type Image struct {
-	XMLName xml.Name `xml:"Image"`
-	MediaID string   `xml:"MediaId" json:"MediaId"`
+	MediaID string `xml:"MediaId" json:"MediaId"`
 }
 
 //Image 图片消息
