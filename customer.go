@@ -54,6 +54,7 @@ func (c *Customer) Action(token string, actionType int) CustomerResp {
 	v := url.Values{}
 	v.Add("kf_account", c.Account)
 	v.Add("nickname", c.NickName)
+	v.Add("access_token", token)
 
 	h := md5.New()
 	h.Write([]byte(c.Password))
