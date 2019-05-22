@@ -12,6 +12,13 @@ import (
 	"strings"
 )
 
+var client http.Client
+
+func init() {
+	c := http.Client{}
+	client = c
+}
+
 //Wechat 微信基本配置
 type Wechat struct {
 	AppID  string `json:"appid"`

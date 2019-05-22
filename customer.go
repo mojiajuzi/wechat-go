@@ -10,10 +10,13 @@ import (
 	"strings"
 )
 
+//CustomerActionCreate 创建
 const CustomerActionCreate = 1
 
+//CustomerActionUpdate 更新
 const CustomerActionUpdate = 2
 
+//CustomerActionDelete 删除
 const CustomerActionDelete = 3
 
 //Customer 客服账号
@@ -35,6 +38,7 @@ func (c CustomerResp) string() string {
 	return c.ErrMsg
 }
 
+//CustomerList 客服列表
 type CustomerList struct {
 	List []Customer `json:"kf_list"`
 }
