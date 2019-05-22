@@ -6,23 +6,23 @@ import (
 	"time"
 )
 
-//MsgTypeText 文本
-const MsgTypeText = "text"
+//TypeText 文本
+const TypeText = "text"
 
-//MsgTypeImage 图片
-const MsgTypeImage = "image"
+//TypeImage 图片
+const TypeImage = "image"
 
-//MsgTypeVoice 语音
-const MsgTypeVoice = "voice"
+//TypeVoice 语音
+const TypeVoice = "voice"
 
-//MsgTypeVedio 视频
-const MsgTypeVedio = "vedio"
+//TypeVedio 视频
+const TypeVedio = "vedio"
 
-//MsgTypeMusic 音乐
-const MsgTypeMusic = "music"
+//TypeMusic 音乐
+const TypeMusic = "music"
 
-//MsgTypeNews 图文
-const MsgTypeNews = "news"
+//TypeNews 图文
+const TypeNews = "news"
 
 //Message 微信消息结构体
 type Message struct {

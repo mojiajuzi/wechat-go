@@ -28,13 +28,13 @@ type Customer struct {
 	Avatar   string `json:"kf_headimgurl"`
 }
 
-//CustomerResp 客服操作响应
-type CustomerResp struct {
+//CommonResp 客服操作响应
+type CommonResp struct {
 	ErrCode int    `json:"errcode"`
 	ErrMsg  string `json:"errmsg"`
 }
 
-func (c CustomerResp) string() string {
+func (c CommonResp) string() string {
 	return c.ErrMsg
 }
 
@@ -44,7 +44,7 @@ type CustomerList struct {
 }
 
 //Action 客服的增加，更新删除操作
-func (c *Customer) Action(token string, actionType int) CustomerResp {
+func (c *Customer) Action(token string, actionType int) CommonResp {
 	var uri string
 
 	switch actionType {
@@ -67,7 +67,7 @@ func (c *Customer) Action(token string, actionType int) CustomerResp {
 	body := strings.NewReader(v.Encode())
 
 	res, err := http.Post(uri, "application/x-www-form-urlencoded", body)
-	r := CustomerResp{}
+	r := CommonResp{}
 	if err != nil {
 		r.ErrCode = 1
 		r.ErrMsg = err.Error()
@@ -91,14 +91,14 @@ func (c *Customer) SetAvatar(token string) string {
 }
 
 //List 获取客服列表
-func (c *Customer) List(token string) ([]Customer, CustomerResp) {
+func (c *Customer) List(token string) ([]Customer, CommonResp) {
 	uri := "https://api.weixin.qq.com/cgi-bin/customservice/getkflist"
 
 	v := url.Values{}
 	v.Add("access_token", token)
 	url := uri + "?" + v.Encode()
 	resp, err := http.Get(url)
-	r := CustomerResp{}
+	r := CommonResp{}
 	var cList []Customer
 	if err != nil {
 		r.ErrCode = 1

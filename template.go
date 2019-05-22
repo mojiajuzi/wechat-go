@@ -23,7 +23,7 @@ type Template struct {
 }
 
 //Industry 设置行业
-func (t *Template) Industry(primary, second int) (CustomerResp, error) {
+func (t *Template) Industry(primary, second int) (CommonResp, error) {
 	u := TemplateMessageURL + "api_set_industry"
 
 	v := url.Values{}
@@ -31,7 +31,7 @@ func (t *Template) Industry(primary, second int) (CustomerResp, error) {
 	v.Add("industry_id1", strconv.Itoa(primary))
 	v.Add("industry_id2", strconv.Itoa(second))
 
-	res := CustomerResp{}
+	res := CommonResp{}
 	resp, err := client.PostForm(u, v)
 	if err != nil {
 		return res, err
@@ -70,7 +70,7 @@ func (t *Template) GetTemplateID(shortID string) (string, error) {
 	}
 
 	var res struct {
-		CustomerResp,
+		CommonResp,
 		TemplateIDTemp string
 	}
 
@@ -113,7 +113,7 @@ func (t *Template) List() ([]Template, error) {
 }
 
 //Delete 删除模板消息
-func (t *Template) Delete() (CustomerResp, error) {
+func (t *Template) Delete() (CommonResp, error) {
 	u := TemplateMessageURL + "del_private_template"
 
 	v := url.Values{}
@@ -122,7 +122,7 @@ func (t *Template) Delete() (CustomerResp, error) {
 
 	resp, err := client.PostForm(u, v)
 
-	res := CustomerResp{}
+	res := CommonResp{}
 	if err != nil {
 		return res, err
 	}
@@ -165,7 +165,7 @@ type MiniProgramMessage struct {
 func (t *Template) Send(m TemplateMessage) (int, error) {
 	u := "https://api.weixin.qq.com/cgi-bin/message/template/send"
 	var res struct {
-		CustomerResp,
+		CommonResp,
 		MsgID int
 	}
 
